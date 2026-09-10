@@ -740,7 +740,7 @@ export default function App() {
             onClick={handleExport}
             title="Экспорт в JSON"
             className="px-3.5 py-2.5 rounded-xl text-lg cursor-pointer transition-all duration-200"
-            style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)' }}
+            style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)', fontStyle: 'italic' }}
           >
             📤 Экспорт
           </button>
@@ -748,7 +748,7 @@ export default function App() {
             onClick={handleImport}
             title="Импорт из JSON"
             className="px-3.5 py-2.5 rounded-xl text-lg cursor-pointer transition-all duration-200"
-            style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)' }}
+            style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)', fontStyle: 'italic' }}
           >
             📥 Импорт
           </button>
