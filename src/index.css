@@ -9,6 +9,7 @@
 }
 
 :root {
+  font-size: 26px;
   --bg: #f5f1ea;
   --bg-soft: #ebe4d6;
   --card: #ffffff;
