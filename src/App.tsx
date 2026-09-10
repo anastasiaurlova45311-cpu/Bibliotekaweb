@@ -693,11 +693,14 @@ export default function App() {
     <div className="max-w-[1200px] mx-auto px-5 py-7">
       {/* Header */}
       <header className="flex justify-between items-center mb-7 flex-wrap gap-4">
-        <div>
-          <h1 className="text-4xl font-bold tracking-wide max-[600px]:text-3xl" style={{ color: 'var(--primary-dark)' }}>
-            📚 Моя библиотека
-          </h1>
-          <p className="italic" style={{ color: 'var(--text-soft)' }}>Коллекция книг, которые вдохновляют</p>
+        <div className="flex items-center gap-3">
+          <img src="/logo.svg" alt="" className="w-12 h-12 max-[600px]:w-10 max-[600px]:h-10" />
+          <div>
+            <h1 className="text-4xl font-bold tracking-wide max-[600px]:text-3xl" style={{ color: 'var(--heading)' }}>
+              Моя библиотека
+            </h1>
+            <p className="italic" style={{ color: 'var(--text-soft)' }}>Коллекция книг, которые вдохновляют</p>
+          </div>
         </div>
         <ThemeToggle isDark={isDark} onToggle={handleToggleTheme} />
       </header>

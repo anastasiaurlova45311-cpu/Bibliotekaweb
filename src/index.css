@@ -8,6 +8,7 @@
   --text-soft: #6b645a;
   --primary: #b85c38;
   --primary-dark: #8f4428;
+  --heading: #1a1210;
   --accent-green: #4a7c59;
   --accent-blue: #3d6cb9;
   --accent-purple: #7b5ea7;
@@ -25,6 +26,7 @@ body.dark {
   --text-soft: #a89e8c;
   --primary: #e08a5e;
   --primary-dark: #f0a67a;
+  --heading: #f5e6d0;
   --accent-green: #7cb892;
   --accent-blue: #6b9bd1;
   --accent-purple: #a88fd1;
