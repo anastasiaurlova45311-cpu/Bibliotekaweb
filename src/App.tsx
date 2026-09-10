@@ -102,12 +102,12 @@ function GoalPanel({ books, goal, onEditGoal }: { books: Book[]; goal: number; o
       </h3>
       <div className="flex justify-between items-baseline mb-2">
         <div>
-          <span className="text-3xl font-bold font-sans" style={{ color: 'var(--accent-green)' }}>{readCount}</span>
+          <span className="text-3xl font-bold" style={{ color: 'var(--accent-green)' }}>{readCount}</span>
           <span className="ml-1" style={{ color: 'var(--text-soft)' }}>из {goal} книг</span>
         </div>
         <button
           onClick={onEditGoal}
-          className="px-3 py-1.5 rounded-lg text-sm cursor-pointer transition-all duration-200 font-sans"
+          className="px-3 py-1.5 rounded-lg text-sm cursor-pointer transition-all duration-200"
           style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-soft)' }}
           onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary)'; }}
           onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-soft)'; }}
@@ -187,7 +187,7 @@ function StatsCards({ books }: { books: Book[] }) {
           className="p-4 rounded-xl text-center shadow-md transition-transform duration-200 hover:-translate-y-1"
           style={{ background: 'var(--card)', borderLeft: `4px solid ${borderColor[stat.className]}`, boxShadow: 'var(--shadow)' }}
         >
-          <div className="text-3xl font-bold font-sans" style={{ color: 'var(--primary-dark)' }}>{stat.value}</div>
+          <div className="text-3xl font-bold" style={{ color: 'var(--primary-dark)' }}>{stat.value}</div>
           <div className="text-sm mt-1" style={{ color: 'var(--text-soft)' }}>{stat.label}</div>
         </div>
       ))}
