@@ -94,7 +94,7 @@ function GoalPanel({ books, goal, onEditGoal }: { books: Book[]; goal: number; o
 
   return (
     <div
-      className="rounded-2xl p-5 shadow-md"
+      className="rounded-2xl p-7 shadow-md"
       style={{ background: 'var(--card)', borderLeft: '4px solid var(--accent-green)', boxShadow: 'var(--shadow)' }}
     >
       <h3 className="flex items-center gap-2 mb-3 text-lg font-semibold" style={{ color: 'var(--accent-green)' }}>
@@ -140,7 +140,7 @@ function RecPanel({ books }: { books: Book[] }) {
 
   return (
     <div
-      className="rounded-2xl p-5 shadow-md"
+      className="rounded-2xl p-7 shadow-md"
       style={{ background: 'var(--card)', borderLeft: '4px solid var(--accent-purple)', boxShadow: 'var(--shadow)' }}
     >
       <h3 className="flex items-center gap-2 mb-3 text-lg font-semibold" style={{ color: 'var(--accent-purple)' }}>
@@ -180,7 +180,7 @@ function StatsCards({ books }: { books: Book[] }) {
   };
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-4 mb-6">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-6 mb-8">
       {stats.map((stat, i) => (
         <div
           key={i}
@@ -211,7 +211,7 @@ function BookCard({ book, onEdit, onDelete, onPageChange }: {
 
   return (
     <div
-      className="animate-fade-in rounded-2xl p-4 shadow-md transition-all duration-300 hover:-translate-y-1 relative flex gap-4"
+      className="animate-fade-in rounded-2xl p-6 shadow-md transition-all duration-300 hover:-translate-y-1 relative flex gap-6"
       style={{
         background: 'var(--card)',
         boxShadow: 'var(--shadow)',
@@ -222,7 +222,7 @@ function BookCard({ book, onEdit, onDelete, onPageChange }: {
     >
       {/* Cover */}
       <div
-        className="w-20 h-[110px] flex-shrink-0 rounded-lg flex items-center justify-center text-3xl overflow-hidden"
+        className="w-28 h-[150px] flex-shrink-0 rounded-lg flex items-center justify-center text-4xl overflow-hidden"
         style={{ background: 'var(--bg-soft)', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
       >
         {book.coverUrl ? (
@@ -690,9 +690,9 @@ export default function App() {
   ];
 
   return (
-    <div className="max-w-[1200px] mx-auto px-5 py-7">
+    <div className="w-full px-10 py-10">
       {/* Header */}
-      <header className="flex justify-between items-center mb-7 flex-wrap gap-4">
+      <header className="flex justify-between items-center mb-10 flex-wrap gap-6">
         <div className="flex items-center gap-3">
           <img src="/logo.svg" alt="" className="w-12 h-12 max-[600px]:w-10 max-[600px]:h-10" />
           <div>
@@ -706,7 +706,7 @@ export default function App() {
       </header>
 
       {/* Top panels */}
-      <div className="grid grid-cols-[1.2fr_1fr] gap-5 mb-6 max-[800px]:grid-cols-1">
+      <div className="grid grid-cols-[1.2fr_1fr] gap-8 mb-8 max-[800px]:grid-cols-1">
         <GoalPanel books={books} goal={goal} onEditGoal={handleEditGoal} />
         <RecPanel books={books} />
       </div>
@@ -715,7 +715,7 @@ export default function App() {
       <StatsCards books={books} />
 
       {/* Controls */}
-      <div className="rounded-2xl p-5 mb-6" style={{ background: 'var(--card)', boxShadow: 'var(--shadow)' }}>
+      <div className="rounded-2xl p-7 mb-8" style={{ background: 'var(--card)', boxShadow: 'var(--shadow)' }}>
         <div className="flex gap-2.5 mb-4 flex-wrap">
           <input
             type="text"
@@ -780,7 +780,7 @@ export default function App() {
       </div>
 
       {/* Books grid */}
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-5 max-[600px]:grid-cols-1">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-8 max-[600px]:grid-cols-1">
         {filteredBooks.length === 0 ? (
           <div className="text-center py-16 col-span-full" style={{ color: 'var(--text-soft)' }}>
             <div className="text-6xl mb-4 opacity-40">📚</div>
