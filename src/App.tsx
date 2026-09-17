@@ -702,7 +702,18 @@ export default function App() {
             <p className="italic" style={{ color: 'var(--text-soft)' }}>Коллекция книг, которые вдохновляют</p>
           </div>
         </div>
-        <ThemeToggle isDark={isDark} onToggle={handleToggleTheme} />
+        <div className="flex gap-4 items-center">
+          <a
+            href="https://forms.gle/jSybJ8b9fPY8zNcf6"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 rounded-xl text-base font-semibold cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
+            style={{ background: 'var(--accent-purple)', color: '#fff' }}
+          >
+            💬 Обратная связь
+          </a>
+          <ThemeToggle isDark={isDark} onToggle={handleToggleTheme} />
+        </div>
       </header>
 
       {/* Top panels */}
