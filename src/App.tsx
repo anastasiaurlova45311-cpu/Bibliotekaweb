@@ -180,7 +180,7 @@ function StatsCards({ books }: { books: Book[] }) {
   };
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-6 mb-14">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-6 mb-16">
       {stats.map((stat, i) => (
         <div
           key={i}
@@ -692,7 +692,7 @@ export default function App() {
   return (
     <div className="w-full px-10 py-10">
       {/* Header */}
-      <header className="flex justify-between items-center mb-12 flex-wrap gap-6">
+      <header className="flex justify-between items-center mb-16 flex-wrap gap-6">
         <div className="flex items-center gap-3">
           <img src="/logo.svg" alt="" className="w-12 h-12 max-[600px]:w-10 max-[600px]:h-10" />
           <div>
@@ -706,7 +706,7 @@ export default function App() {
       </header>
 
       {/* Top panels */}
-      <div className="grid grid-cols-[1.2fr_1fr] gap-10 mb-14 max-[800px]:grid-cols-1">
+      <div className="grid grid-cols-[1.2fr_1fr] gap-10 mb-16 max-[800px]:grid-cols-1">
         <GoalPanel books={books} goal={goal} onEditGoal={handleEditGoal} />
         <RecPanel books={books} />
       </div>
@@ -715,8 +715,8 @@ export default function App() {
       <StatsCards books={books} />
 
       {/* Controls */}
-      <div className="rounded-2xl p-7 mb-12" style={{ background: 'var(--card)', boxShadow: 'var(--shadow)' }}>
-        <div className="flex gap-4 mb-6 flex-wrap gap-y-4">
+      <div className="rounded-2xl p-7 mb-16" style={{ background: 'var(--card)', boxShadow: 'var(--shadow)' }}>
+        <div className="flex gap-4 mb-8 flex-wrap gap-y-4">
           <input
             type="text"
             value={currentSearch}
@@ -735,7 +735,7 @@ export default function App() {
             + Добавить книгу
           </button>
         </div>
-        <div className="flex gap-4 mb-8 flex-wrap gap-y-4">
+        <div className="flex gap-4 mb-10 flex-wrap gap-y-4">
           <button
             onClick={handleExport}
             title="Экспорт в JSON"
@@ -760,7 +760,7 @@ export default function App() {
             onChange={handleImportFile}
           />
         </div>
-        <div className="flex gap-4 flex-wrap gap-y-4 mt-2">
+        <div className="flex gap-4 flex-wrap gap-y-4 mt-4">
           {filterButtons.map(fb => (
             <button
               key={fb.value}
