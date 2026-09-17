@@ -180,7 +180,7 @@ function StatsCards({ books }: { books: Book[] }) {
   };
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-6 mb-10">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-6 mb-14">
       {stats.map((stat, i) => (
         <div
           key={i}
@@ -706,7 +706,7 @@ export default function App() {
       </header>
 
       {/* Top panels */}
-      <div className="grid grid-cols-[1.2fr_1fr] gap-10 mb-10 max-[800px]:grid-cols-1">
+      <div className="grid grid-cols-[1.2fr_1fr] gap-10 mb-14 max-[800px]:grid-cols-1">
         <GoalPanel books={books} goal={goal} onEditGoal={handleEditGoal} />
         <RecPanel books={books} />
       </div>
@@ -715,7 +715,7 @@ export default function App() {
       <StatsCards books={books} />
 
       {/* Controls */}
-      <div className="rounded-2xl p-7 mb-10" style={{ background: 'var(--card)', boxShadow: 'var(--shadow)' }}>
+      <div className="rounded-2xl p-7 mb-12" style={{ background: 'var(--card)', boxShadow: 'var(--shadow)' }}>
         <div className="flex gap-4 mb-6 flex-wrap gap-y-4">
           <input
             type="text"
@@ -735,7 +735,7 @@ export default function App() {
             + Добавить книгу
           </button>
         </div>
-        <div className="flex gap-4 mb-6 flex-wrap gap-y-4">
+        <div className="flex gap-4 mb-8 flex-wrap gap-y-4">
           <button
             onClick={handleExport}
             title="Экспорт в JSON"
@@ -760,7 +760,7 @@ export default function App() {
             onChange={handleImportFile}
           />
         </div>
-        <div className="flex gap-4 flex-wrap gap-y-4">
+        <div className="flex gap-4 flex-wrap gap-y-4 mt-2">
           {filterButtons.map(fb => (
             <button
               key={fb.value}
