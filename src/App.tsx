@@ -107,7 +107,7 @@ function GoalPanel({ books, goal, onEditGoal }: { books: Book[]; goal: number; o
         </div>
         <button
           onClick={onEditGoal}
-          className="px-3 py-1.5 rounded-lg text-sm cursor-pointer transition-all duration-200"
+          className="px-5 py-2.5 rounded-lg text-sm cursor-pointer transition-all duration-200"
           style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-soft)' }}
           onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary)'; }}
           onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-soft)'; }}
@@ -293,14 +293,14 @@ function BookCard({ book, onEdit, onDelete, onPageChange }: {
         <div className="flex gap-1 justify-end pt-2.5" style={{ borderTop: '1px solid var(--border)' }}>
           <button
             onClick={() => onEdit(book.id)}
-            className="p-1.5 px-2.5 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-[var(--bg-soft)]"
+            className="p-2.5 px-4 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-[var(--bg-soft)]"
             title="Редактировать"
           >
             ✏️
           </button>
           <button
             onClick={() => onDelete(book.id)}
-            className="p-1.5 px-2.5 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-red-100"
+            className="p-2.5 px-4 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-red-100"
             title="Удалить"
           >
             🗑️
@@ -467,14 +467,14 @@ function BookModal({ book, onSave, onClose }: {
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-3 rounded-xl text-base font-semibold cursor-pointer transition-all duration-200"
+              className="px-8 py-4 rounded-xl text-base font-semibold cursor-pointer transition-all duration-200"
               style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)' }}
             >
               Отмена
             </button>
             <button
               type="submit"
-              className="px-5 py-3 rounded-xl text-base font-semibold cursor-pointer text-white transition-all duration-200 hover:-translate-y-0.5"
+              className="px-8 py-4 rounded-xl text-base font-semibold cursor-pointer text-white transition-all duration-200 hover:-translate-y-0.5"
               style={{ background: 'var(--primary)' }}
             >
               Сохранить
@@ -729,7 +729,7 @@ export default function App() {
           />
           <button
             onClick={handleAddBook}
-            className="px-5 py-3 rounded-xl text-base font-semibold cursor-pointer text-white transition-all duration-200 hover:-translate-y-0.5"
+            className="px-8 py-4 rounded-xl text-base font-semibold cursor-pointer text-white transition-all duration-200 hover:-translate-y-0.5"
             style={{ background: 'var(--primary)' }}
           >
             + Добавить книгу
@@ -739,7 +739,7 @@ export default function App() {
           <button
             onClick={handleExport}
             title="Экспорт в JSON"
-            className="px-3.5 py-2.5 rounded-xl text-lg cursor-pointer transition-all duration-200"
+            className="px-6 py-4 rounded-xl text-lg cursor-pointer transition-all duration-200"
             style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)', fontStyle: 'italic' }}
           >
             📤 Экспорт
@@ -747,7 +747,7 @@ export default function App() {
           <button
             onClick={handleImport}
             title="Импорт из JSON"
-            className="px-3.5 py-2.5 rounded-xl text-lg cursor-pointer transition-all duration-200"
+            className="px-6 py-4 rounded-xl text-lg cursor-pointer transition-all duration-200"
             style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)', fontStyle: 'italic' }}
           >
             📥 Импорт
@@ -765,7 +765,7 @@ export default function App() {
             <button
               key={fb.value}
               onClick={() => setCurrentFilter(fb.value)}
-              className="px-4 py-2 rounded-full text-sm cursor-pointer transition-all duration-200"
+              className="px-6 py-3 rounded-full text-sm cursor-pointer transition-all duration-200"
               style={{
                 border: '2px solid var(--border)',
                 background: currentFilter === fb.value ? 'var(--primary)' : 'transparent',
