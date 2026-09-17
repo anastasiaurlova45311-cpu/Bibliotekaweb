@@ -23,9 +23,9 @@ const THEME_KEY = 'myLibraryTheme';
 const GOAL_KEY = 'myLibraryGoal';
 
 const STATUS_LABELS: Record<string, string> = {
-  read: '📖 Прочитано',
-  reading: '📚 Читаю',
-  want: '🎯 Хочу прочитать'
+  read: '✅ Прочитано',
+  reading: '📖 Читаю',
+  want: '🔖 Хочу прочитать'
 };
 
 // === HELPERS ===
@@ -75,7 +75,7 @@ function ThemeToggle({ isDark, onToggle }: { isDark: boolean; onToggle: () => vo
         boxShadow: 'var(--shadow)',
       }}
     >
-      {isDark ? '☀️' : '🌙'}
+      {isDark ? '🌅' : '🌆'}
     </button>
   );
 }
@@ -89,8 +89,8 @@ function GoalPanel({ books, goal, onEditGoal }: { books: Book[]; goal: number; o
   if (readCount === 0) message = 'Начни читать — и цель покорится!';
   else if (percent < 50) message = `Отличное начало! Осталось ${goal - readCount} книг.`;
   else if (percent < 100) message = `Больше половины! Осталось ${goal - readCount} книг.`;
-  else if (percent === 100) message = '🎉 Цель достигнута! Ты молодец!';
-  else message = `🏆 Превышение цели на ${readCount - goal} книг!`;
+  else if (percent === 100) message = '✨ Цель достигнута! Ты молодец!';
+  else message = `🌟 Превышение цели на ${readCount - goal} книг!`;
 
   return (
     <div
@@ -98,7 +98,7 @@ function GoalPanel({ books, goal, onEditGoal }: { books: Book[]; goal: number; o
       style={{ background: 'var(--card)', borderLeft: '4px solid var(--accent-green)', boxShadow: 'var(--shadow)' }}
     >
       <h3 className="flex items-center gap-2 mb-3 text-lg font-semibold" style={{ color: 'var(--accent-green)' }}>
-        🎯 Цель на {year} год
+        🔖 Цель на {year} год
       </h3>
       <div className="flex justify-between items-baseline mb-2">
         <div>
@@ -144,7 +144,7 @@ function RecPanel({ books }: { books: Book[] }) {
       style={{ background: 'var(--card)', borderLeft: '4px solid var(--accent-purple)', boxShadow: 'var(--shadow)' }}
     >
       <h3 className="flex items-center gap-2 mb-3 text-lg font-semibold" style={{ color: 'var(--accent-purple)' }}>
-        💡 Твои любимые жанры
+        ✨ Твои любимые жанры
       </h3>
       <div className="flex flex-col gap-2">
         {top.length === 0 ? (
@@ -167,9 +167,9 @@ function RecPanel({ books }: { books: Book[] }) {
 function StatsCards({ books }: { books: Book[] }) {
   const stats = [
     { label: 'Всего книг', value: books.length, className: '' },
-    { label: '📖 Прочитано', value: books.filter(b => b.status === 'read').length, className: 'read' },
-    { label: '📚 Читаю', value: books.filter(b => b.status === 'reading').length, className: 'reading' },
-    { label: '🎯 Хочу прочитать', value: books.filter(b => b.status === 'want').length, className: 'want' },
+    { label: '✅ Прочитано', value: books.filter(b => b.status === 'read').length, className: 'read' },
+    { label: '📖 Читаю', value: books.filter(b => b.status === 'reading').length, className: 'reading' },
+    { label: '🔖 Хочу прочитать', value: books.filter(b => b.status === 'want').length, className: 'want' },
   ];
 
   const borderColor: Record<string, string> = {
@@ -204,7 +204,7 @@ function BookCard({ book, onEdit, onDelete, onPageChange }: {
   const renderStars = (rating: number) => {
     let html = '';
     for (let i = 1; i <= 5; i++) {
-      html += i <= rating ? '★' : '☆';
+      html += i <= rating ? '♦' : '◇';
     }
     return html;
   };
@@ -226,8 +226,8 @@ function BookCard({ book, onEdit, onDelete, onPageChange }: {
         style={{ background: 'var(--bg-soft)', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
       >
         {book.coverUrl ? (
-          <img src={book.coverUrl} alt="Обложка" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).parentElement!.innerHTML = '📕'; }} />
-        ) : '📕'}
+          <img src={book.coverUrl} alt="Обложка" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).parentElement!.innerHTML = '📔'; }} />
+        ) : '📔'}
       </div>
 
       {/* Info */}
@@ -296,14 +296,14 @@ function BookCard({ book, onEdit, onDelete, onPageChange }: {
             className="p-2.5 px-4 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-[var(--bg-soft)]"
             title="Редактировать"
           >
-            ✏️
+            🖊️
           </button>
           <button
             onClick={() => onDelete(book.id)}
             className="p-2.5 px-4 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-red-100"
             title="Удалить"
           >
-            🗑️
+            ❌
           </button>
         </div>
       </div>
@@ -411,9 +411,9 @@ function BookModal({ book, onSave, onClose }: {
                 onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.background = 'var(--card)'; }}
                 onBlur={e => { e.target.style.borderColor = 'var(--border)'; e.target.style.background = 'var(--bg-soft)'; }}
               >
-                <option value="want">🎯 Хочу прочитать</option>
-                <option value="reading">📚 Читаю</option>
-                <option value="read">📖 Прочитано</option>
+                <option value="want">🔖 Хочу прочитать</option>
+                <option value="reading">📖 Читаю</option>
+                <option value="read">✅ Прочитано</option>
               </select>
             </div>
           </div>
@@ -458,7 +458,7 @@ function BookModal({ book, onSave, onClose }: {
                   style={{ color: v <= rating ? '#f4b942' : 'var(--border)' }}
                   onClick={() => setRating(v)}
                 >
-                  ★
+                  ♦
                 </span>
               ))}
             </div>
@@ -684,9 +684,9 @@ export default function App() {
 
   const filterButtons: { label: string; value: FilterType }[] = [
     { label: 'Все', value: 'all' },
-    { label: '📖 Прочитано', value: 'read' },
-    { label: '📚 Читаю', value: 'reading' },
-    { label: '🎯 Хочу прочитать', value: 'want' },
+    { label: '✅ Прочитано', value: 'read' },
+    { label: '📖 Читаю', value: 'reading' },
+    { label: '🔖 Хочу прочитать', value: 'want' },
   ];
 
   return (
@@ -721,7 +721,7 @@ export default function App() {
             type="text"
             value={currentSearch}
             onChange={(e) => setCurrentSearch(e.target.value)}
-            placeholder="🔍 Поиск по названию или автору..."
+            placeholder="🔎 Поиск по названию или автору..."
             className="flex-1 min-w-[200px] px-4 py-3 rounded-xl text-base transition-all duration-200 outline-none"
             style={{ border: '2px solid var(--border)', background: 'var(--bg-soft)', color: 'var(--text)' }}
             onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.background = 'var(--card)'; }}
@@ -742,7 +742,7 @@ export default function App() {
             className="px-6 py-4 rounded-xl text-lg cursor-pointer transition-all duration-200"
             style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)', fontStyle: 'italic' }}
           >
-            📤 Экспорт
+            💾 Экспорт
           </button>
           <button
             onClick={handleImport}
@@ -750,7 +750,7 @@ export default function App() {
             className="px-6 py-4 rounded-xl text-lg cursor-pointer transition-all duration-200"
             style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)', fontStyle: 'italic' }}
           >
-            📥 Импорт
+            📂 Импорт
           </button>
           <input
             ref={importRef}
@@ -783,7 +783,7 @@ export default function App() {
       <div className="grid grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-8 max-[600px]:grid-cols-1">
         {filteredBooks.length === 0 ? (
           <div className="text-center py-16 col-span-full" style={{ color: 'var(--text-soft)' }}>
-            <div className="text-6xl mb-4 opacity-40">📚</div>
+            <div className="text-6xl mb-4 opacity-40">📔</div>
             <h3 className="text-xl mb-2" style={{ color: 'var(--text)' }}>
               {books.length === 0 ? 'Библиотека пуста' : 'Ничего не найдено'}
             </h3>
