@@ -1,12 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/penguin-attack');
 @import "tailwindcss";
-
-@font-face {
-  font-family: 'Passions Conflict RUS';
-  src: url('https://media.uprock.school/fonts/Passions_Conflict_RUS/PassionsConflictRUS-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
 
 :root {
   font-size: 36px;
@@ -51,7 +44,7 @@ body.dark {
 }
 
 body {
-  font-family: 'Passions Conflict RUS', 'Georgia', 'Segoe UI', serif;
+  font-family: 'Penguin Attack', 'Georgia', 'Segoe UI', serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
