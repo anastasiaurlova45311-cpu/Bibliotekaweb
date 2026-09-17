@@ -716,7 +716,7 @@ export default function App() {
 
       {/* Controls */}
       <div className="rounded-2xl p-7 mb-8" style={{ background: 'var(--card)', boxShadow: 'var(--shadow)' }}>
-        <div className="flex gap-2.5 mb-4 flex-wrap">
+        <div className="flex gap-4 mb-4 flex-wrap">
           <input
             type="text"
             value={currentSearch}
@@ -735,7 +735,7 @@ export default function App() {
             + Добавить книгу
           </button>
         </div>
-        <div className="flex gap-2 mb-4 flex-wrap">
+        <div className="flex gap-4 mb-4 flex-wrap">
           <button
             onClick={handleExport}
             title="Экспорт в JSON"
@@ -760,7 +760,7 @@ export default function App() {
             onChange={handleImportFile}
           />
         </div>
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-4 flex-wrap">
           {filterButtons.map(fb => (
             <button
               key={fb.value}
