@@ -1,4 +1,4 @@
-@import url('https://fonts.cdnfonts.com/css/penguin-attack');
+@import url('https://fonts.googleapis.com/css2?family=Marck+Script&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -44,7 +44,7 @@ body.dark {
 }
 
 body {
-  font-family: 'Penguin Attack', 'Georgia', 'Segoe UI', serif;
+  font-family: 'Marck Script', 'Georgia', 'Segoe UI', serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
