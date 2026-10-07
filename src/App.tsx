@@ -1,26 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-
-// === TYPES ===
-interface Book {
-  id: string;
-  title: string;
-  author: string;
-  genre: string;
-  status: 'read' | 'reading' | 'want';
-  isbn: string;
-  totalPages: number | null;
-  currentPage: number;
-  rating: number;
-  coverUrl: string | null;
-  dateAdded: number;
-}
+import { useAuth } from './contexts/AuthContext';
+import { useBooks, useGoal } from './hooks/useBooks';
+import type { Book } from './hooks/useBooks';
+import AuthModal from './components/AuthModal';
 
 type FilterType = 'all' | 'read' | 'reading' | 'want';
 
-// === CONSTANTS ===
-const STORAGE_KEY = 'myLibraryBooks';
 const THEME_KEY = 'myLibraryTheme';
-const GOAL_KEY = 'myLibraryGoal';
 
 const STATUS_LABELS: Record<string, string> = {
   read: '✅ Прочитано',
@@ -36,10 +22,6 @@ function pluralize(n: number, one: string, two: string, five: string): string {
   if (abs === 1) return one;
   if (abs >= 2 && abs <= 4) return two;
   return five;
-}
-
-function generateId(): string {
-  return 'b_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
 }
 
 async function fetchCoverByISBN(isbn: string): Promise<string | null> {
@@ -180,7 +162,7 @@ function StatsCards({ books }: { books: Book[] }) {
   };
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-8 mb-20">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-10 mb-24">
       {stats.map((stat, i) => (
         <div
           key={i}
@@ -220,7 +202,6 @@ function BookCard({ book, onEdit, onDelete, onPageChange }: {
       onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow-hover)'; }}
       onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'var(--shadow)'; }}
     >
-      {/* Cover */}
       <div
         className="w-28 h-[150px] flex-shrink-0 rounded-lg flex items-center justify-center text-4xl overflow-hidden"
         style={{ background: 'var(--bg-soft)', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
@@ -230,7 +211,6 @@ function BookCard({ book, onEdit, onDelete, onPageChange }: {
         ) : '📔'}
       </div>
 
-      {/* Info */}
       <div className="flex-1 min-w-0">
         <h4 className="text-lg font-semibold leading-tight mb-1 break-words" style={{ color: 'var(--primary-dark)' }}>
           {book.title}
@@ -260,7 +240,6 @@ function BookCard({ book, onEdit, onDelete, onPageChange }: {
           </div>
         )}
 
-        {/* Progress */}
         {book.totalPages && book.totalPages > 0 && (
           <div className="mb-2.5">
             <div className="flex justify-between text-xs mb-1" style={{ color: 'var(--text-soft)' }}>
@@ -289,18 +268,17 @@ function BookCard({ book, onEdit, onDelete, onPageChange }: {
           </div>
         )}
 
-        {/* Actions */}
-        <div className="flex gap-1 justify-end pt-2.5" style={{ borderTop: '1px solid var(--border)' }}>
+        <div className="flex gap-4 justify-end pt-2.5" style={{ borderTop: '1px solid var(--border)' }}>
           <button
             onClick={() => onEdit(book.id)}
-            className="p-2.5 px-4 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-[var(--bg-soft)]"
+            className="p-3 px-5 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-[var(--bg-soft)]"
             title="Редактировать"
           >
             🖊️
           </button>
           <button
             onClick={() => onDelete(book.id)}
-            className="p-2.5 px-4 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-red-100"
+            className="p-3 px-5 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-red-100"
             title="Удалить"
           >
             ❌
@@ -509,16 +487,16 @@ function Toast({ message, isError, onDone }: { message: string; isError: boolean
 
 // === MAIN APP ===
 export default function App() {
-  const [books, setBooks] = useState<Book[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : [];
-  });
+  const { user, loading: authLoading, signOut } = useAuth();
+  const { books, loading: booksLoading, addBook, updateBook, deleteBook, importBooks } = useBooks();
+  const { goal, loading: goalLoading, saveGoal } = useGoal();
+  
   const [isDark, setIsDark] = useState(() => localStorage.getItem(THEME_KEY) === 'dark');
-  const [goal, setGoal] = useState(() => parseInt(localStorage.getItem(GOAL_KEY) || '') || 12);
   const [currentFilter, setCurrentFilter] = useState<FilterType>('all');
   const [currentSearch, setCurrentSearch] = useState('');
   const [modalBook, setModalBook] = useState<Book | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const [toast, setToast] = useState<{ message: string; isError: boolean } | null>(null);
   const importRef = useRef<HTMLInputElement>(null);
 
@@ -532,24 +510,17 @@ export default function App() {
     localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
   }, [isDark]);
 
-  // Save books
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
-  }, [books]);
-
-  // Save goal
-  useEffect(() => {
-    localStorage.setItem(GOAL_KEY, goal.toString());
-  }, [goal]);
-
   // Escape key
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && modalOpen) setModalOpen(false);
+      if (e.key === 'Escape') {
+        if (modalOpen) setModalOpen(false);
+        if (authModalOpen) setAuthModalOpen(false);
+      }
     };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
-  }, [modalOpen]);
+  }, [modalOpen, authModalOpen]);
 
   const showToast = useCallback((message: string, isError = false) => {
     setToast({ message, isError });
@@ -562,7 +533,7 @@ export default function App() {
     if (input === null) return;
     const n = parseInt(input);
     if (!isNaN(n) && n > 0) {
-      setGoal(n);
+      saveGoal(n);
       showToast('Цель обновлена!');
     }
   };
@@ -580,16 +551,16 @@ export default function App() {
     }
   };
 
-  const handleDeleteBook = (id: string) => {
+  const handleDeleteBook = async (id: string) => {
     const book = books.find(b => b.id === id);
     if (!book) return;
     if (confirm(`Удалить книгу «${book.title}»?`)) {
-      setBooks(prev => prev.filter(b => b.id !== id));
+      await deleteBook(id);
     }
   };
 
-  const handlePageChange = (id: string, page: number) => {
-    setBooks(prev => prev.map(b => b.id === id ? { ...b, currentPage: page } : b));
+  const handlePageChange = async (id: string, page: number) => {
+    await updateBook(id, { currentPage: page });
   };
 
   const handleSaveBook = async (data: Partial<Book>) => {
@@ -600,34 +571,27 @@ export default function App() {
 
     if (modalBook) {
       // Edit
-      setBooks(prev => prev.map(b => {
-        if (b.id !== modalBook.id) return b;
-        return {
-          ...b,
-          ...data,
-          coverUrl: coverUrl || b.coverUrl || null,
-          totalPages: data.totalPages || null,
-          currentPage: data.status === 'read' && data.totalPages
-            ? data.totalPages
-            : (b.currentPage || 0),
-        };
-      }));
+      await updateBook(modalBook.id, {
+        ...data,
+        coverUrl: coverUrl || modalBook.coverUrl || null,
+        currentPage: data.status === 'read' && data.totalPages
+          ? data.totalPages
+          : (modalBook.currentPage || 0),
+      });
     } else {
       // Add new
-      const newBook: Book = {
-        id: generateId(),
-        dateAdded: Date.now(),
-        coverUrl,
-        totalPages: data.totalPages || null,
-        currentPage: data.status === 'read' && data.totalPages ? data.totalPages : 0,
+      await addBook({
         title: data.title || '',
         author: data.author || '',
         genre: data.genre || '',
         status: data.status || 'want',
         isbn: data.isbn || '',
+        totalPages: data.totalPages || null,
+        currentPage: data.status === 'read' && data.totalPages ? data.totalPages : 0,
         rating: data.rating || 0,
-      };
-      setBooks(prev => [...prev, newBook]);
+        coverUrl,
+        dateAdded: Date.now(),
+      });
     }
     setModalOpen(false);
   };
@@ -651,16 +615,16 @@ export default function App() {
     importRef.current?.click();
   };
 
-  const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (ev) => {
+    reader.onload = async (ev) => {
       try {
         const data = JSON.parse(ev.target?.result as string);
         if (!Array.isArray(data)) throw new Error('Неверный формат');
         if (!confirm(`Импортировать ${data.length} книг? Текущая библиотека будет ЗАМЕНЕНА.`)) return;
-        setBooks(data);
+        await importBooks(data);
         showToast(`Импортировано ${data.length} книг!`);
       } catch {
         showToast('Ошибка: неверный JSON файл', true);
@@ -683,16 +647,55 @@ export default function App() {
     .sort((a, b) => b.dateAdded - a.dateAdded);
 
   const filterButtons: { label: string; value: FilterType }[] = [
-    { label: 'Все', value: 'all' },
     { label: '✅ Прочитано', value: 'read' },
     { label: '📖 Читаю', value: 'reading' },
     { label: '🔖 Хочу прочитать', value: 'want' },
   ];
 
+  // Loading state
+  if (authLoading || booksLoading || goalLoading) {
+    return (
+      <div className="w-full px-24 py-10 flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="text-6xl mb-4 animate-pulse">📚</div>
+          <p className="text-xl" style={{ color: 'var(--text-soft)' }}>Загрузка...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Not authenticated
+  if (!user) {
+    return (
+      <div className="w-full px-24 py-10 flex items-center justify-center min-h-screen">
+        <div className="text-center max-w-md">
+          <img src="/logo.svg" alt="" className="w-24 h-24 mx-auto mb-6" />
+          <h1 className="text-4xl font-bold mb-4" style={{ color: 'var(--heading)' }}>
+            Моя библиотека
+          </h1>
+          <p className="text-lg mb-8" style={{ color: 'var(--text-soft)' }}>
+            Войдите в аккаунт, чтобы сохранять свои книги и отслеживать прогресс чтения
+          </p>
+          <button
+            onClick={() => setAuthModalOpen(true)}
+            className="px-8 py-4 rounded-xl text-lg font-semibold cursor-pointer text-white transition-all duration-200 hover:-translate-y-0.5"
+            style={{ background: 'var(--primary)' }}
+          >
+            🔑 Войти / Зарегистрироваться
+          </button>
+        </div>
+
+        {authModalOpen && (
+          <AuthModal onClose={() => setAuthModalOpen(false)} />
+        )}
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full px-10 py-10">
+    <div className="w-full px-24 py-10 max-w-[1600px] mx-auto">
       {/* Header */}
-      <header className="flex justify-between items-center mb-20 flex-wrap gap-6">
+      <header className="flex justify-between items-center mb-24 flex-wrap gap-8">
         <div className="flex items-center gap-3">
           <img src="/logo.svg" alt="" className="w-12 h-12 max-[600px]:w-10 max-[600px]:h-10" />
           <div>
@@ -702,22 +705,30 @@ export default function App() {
             <p className="italic" style={{ color: 'var(--text-soft)' }}>Коллекция книг, которые вдохновляют</p>
           </div>
         </div>
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-8 items-center">
           <a
             href="https://forms.gle/jSybJ8b9fPY8zNcf6"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3 rounded-xl text-base font-semibold cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
+            className="px-8 py-4 rounded-xl text-base font-semibold cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
             style={{ background: 'var(--accent-purple)', color: '#fff' }}
           >
             💬 Обратная связь
           </a>
+          <button
+            onClick={() => signOut()}
+            className="px-8 py-4 rounded-xl text-base font-semibold cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
+            style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)' }}
+            title="Выйти"
+          >
+            🚪 Выйти
+          </button>
           <ThemeToggle isDark={isDark} onToggle={handleToggleTheme} />
         </div>
       </header>
 
       {/* Top panels */}
-      <div className="grid grid-cols-[1.2fr_1fr] gap-12 mb-20 max-[800px]:grid-cols-1">
+      <div className="grid grid-cols-[1.2fr_1fr] gap-14 mb-24 max-[800px]:grid-cols-1">
         <GoalPanel books={books} goal={goal} onEditGoal={handleEditGoal} />
         <RecPanel books={books} />
       </div>
@@ -726,8 +737,8 @@ export default function App() {
       <StatsCards books={books} />
 
       {/* Controls */}
-      <div className="rounded-2xl p-7 mb-20" style={{ background: 'var(--card)', boxShadow: 'var(--shadow)' }}>
-        <div className="flex gap-4 mb-10 flex-wrap gap-y-4">
+      <div className="rounded-2xl p-8 mb-24" style={{ background: 'var(--card)', boxShadow: 'var(--shadow)' }}>
+        <div className="flex gap-8 mb-14 flex-wrap gap-y-8">
           <input
             type="text"
             value={currentSearch}
@@ -746,11 +757,11 @@ export default function App() {
             + Добавить книгу
           </button>
         </div>
-        <div className="flex gap-4 mb-12 flex-wrap gap-y-4">
+        <div className="flex gap-8 mb-16 flex-wrap gap-y-8">
           <button
             onClick={handleExport}
             title="Экспорт в JSON"
-            className="px-6 py-4 rounded-xl text-lg cursor-pointer transition-all duration-200"
+            className="px-8 py-5 rounded-xl text-lg cursor-pointer transition-all duration-200"
             style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)', fontStyle: 'italic' }}
           >
             💾 Экспорт
@@ -758,7 +769,7 @@ export default function App() {
           <button
             onClick={handleImport}
             title="Импорт из JSON"
-            className="px-6 py-4 rounded-xl text-lg cursor-pointer transition-all duration-200"
+            className="px-8 py-5 rounded-xl text-lg cursor-pointer transition-all duration-200"
             style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)', fontStyle: 'italic' }}
           >
             📂 Импорт
@@ -771,12 +782,24 @@ export default function App() {
             onChange={handleImportFile}
           />
         </div>
-        <div className="flex gap-4 flex-wrap gap-y-4 mt-6">
+        <div className="flex gap-8 flex-wrap gap-y-8 mt-8">
+          <button
+            onClick={() => setCurrentFilter('all')}
+            className="px-8 py-4 rounded-full text-sm cursor-pointer transition-all duration-200"
+            style={{
+              border: '2px solid var(--border)',
+              background: currentFilter === 'all' ? 'var(--primary)' : 'transparent',
+              color: currentFilter === 'all' ? '#fff' : 'var(--text-soft)',
+              borderColor: currentFilter === 'all' ? 'var(--primary)' : 'var(--border)',
+            }}
+          >
+            Все
+          </button>
           {filterButtons.map(fb => (
             <button
               key={fb.value}
               onClick={() => setCurrentFilter(fb.value)}
-              className="px-6 py-3 rounded-full text-sm cursor-pointer transition-all duration-200"
+              className="px-8 py-4 rounded-full text-sm cursor-pointer transition-all duration-200"
               style={{
                 border: '2px solid var(--border)',
                 background: currentFilter === fb.value ? 'var(--primary)' : 'transparent',
@@ -791,7 +814,7 @@ export default function App() {
       </div>
 
       {/* Books grid */}
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-12 max-[600px]:grid-cols-1">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-14 max-[600px]:grid-cols-1">
         {filteredBooks.length === 0 ? (
           <div className="text-center py-16 col-span-full" style={{ color: 'var(--text-soft)' }}>
             <div className="text-6xl mb-4 opacity-40">📔</div>
@@ -820,6 +843,11 @@ export default function App() {
           onSave={handleSaveBook}
           onClose={() => setModalOpen(false)}
         />
+      )}
+
+      {/* Auth Modal */}
+      {authModalOpen && (
+        <AuthModal onClose={() => setAuthModalOpen(false)} />
       )}
 
       {/* Toast */}

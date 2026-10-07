@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 :root {
-  font-size: 36px;
+  font-size: 30px;
   --bg: #f5f1ea;
   --bg-soft: #ebe4d6;
   --card: #ffffff;
