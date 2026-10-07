@@ -162,7 +162,7 @@ function StatsCards({ books }: { books: Book[] }) {
   };
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-8 mb-20">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-10 mb-24">
       {stats.map((stat, i) => (
         <div
           key={i}
@@ -268,17 +268,17 @@ function BookCard({ book, onEdit, onDelete, onPageChange }: {
           </div>
         )}
 
-        <div className="flex gap-3 justify-end pt-2.5" style={{ borderTop: '1px solid var(--border)' }}>
+        <div className="flex gap-4 justify-end pt-2.5" style={{ borderTop: '1px solid var(--border)' }}>
           <button
             onClick={() => onEdit(book.id)}
-            className="p-2.5 px-4 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-[var(--bg-soft)]"
+            className="p-3 px-5 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-[var(--bg-soft)]"
             title="Редактировать"
           >
             🖊️
           </button>
           <button
             onClick={() => onDelete(book.id)}
-            className="p-2.5 px-4 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-red-100"
+            className="p-3 px-5 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-red-100"
             title="Удалить"
           >
             ❌
@@ -655,7 +655,7 @@ export default function App() {
   // Loading state
   if (authLoading || booksLoading || goalLoading) {
     return (
-      <div className="w-full px-16 py-10 flex items-center justify-center min-h-screen">
+      <div className="w-full px-24 py-10 flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-pulse">📚</div>
           <p className="text-xl" style={{ color: 'var(--text-soft)' }}>Загрузка...</p>
@@ -667,7 +667,7 @@ export default function App() {
   // Not authenticated
   if (!user) {
     return (
-      <div className="w-full px-16 py-10 flex items-center justify-center min-h-screen">
+      <div className="w-full px-24 py-10 flex items-center justify-center min-h-screen">
         <div className="text-center max-w-md">
           <img src="/logo.svg" alt="" className="w-24 h-24 mx-auto mb-6" />
           <h1 className="text-4xl font-bold mb-4" style={{ color: 'var(--heading)' }}>
@@ -693,9 +693,9 @@ export default function App() {
   }
 
   return (
-    <div className="w-full px-16 py-10 max-w-[1600px] mx-auto">
+    <div className="w-full px-24 py-10 max-w-[1600px] mx-auto">
       {/* Header */}
-      <header className="flex justify-between items-center mb-20 flex-wrap gap-6">
+      <header className="flex justify-between items-center mb-24 flex-wrap gap-8">
         <div className="flex items-center gap-3">
           <img src="/logo.svg" alt="" className="w-12 h-12 max-[600px]:w-10 max-[600px]:h-10" />
           <div>
@@ -705,19 +705,19 @@ export default function App() {
             <p className="italic" style={{ color: 'var(--text-soft)' }}>Коллекция книг, которые вдохновляют</p>
           </div>
         </div>
-        <div className="flex gap-6 items-center">
+        <div className="flex gap-8 items-center">
           <a
             href="https://forms.gle/jSybJ8b9fPY8zNcf6"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3 rounded-xl text-base font-semibold cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
+            className="px-8 py-4 rounded-xl text-base font-semibold cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
             style={{ background: 'var(--accent-purple)', color: '#fff' }}
           >
             💬 Обратная связь
           </a>
           <button
             onClick={() => signOut()}
-            className="px-6 py-3 rounded-xl text-base font-semibold cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
+            className="px-8 py-4 rounded-xl text-base font-semibold cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
             style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)' }}
             title="Выйти"
           >
@@ -728,7 +728,7 @@ export default function App() {
       </header>
 
       {/* Top panels */}
-      <div className="grid grid-cols-[1.2fr_1fr] gap-12 mb-20 max-[800px]:grid-cols-1">
+      <div className="grid grid-cols-[1.2fr_1fr] gap-14 mb-24 max-[800px]:grid-cols-1">
         <GoalPanel books={books} goal={goal} onEditGoal={handleEditGoal} />
         <RecPanel books={books} />
       </div>
@@ -737,8 +737,8 @@ export default function App() {
       <StatsCards books={books} />
 
       {/* Controls */}
-      <div className="rounded-2xl p-7 mb-20" style={{ background: 'var(--card)', boxShadow: 'var(--shadow)' }}>
-        <div className="flex gap-6 mb-10 flex-wrap gap-y-6">
+      <div className="rounded-2xl p-8 mb-24" style={{ background: 'var(--card)', boxShadow: 'var(--shadow)' }}>
+        <div className="flex gap-8 mb-14 flex-wrap gap-y-8">
           <input
             type="text"
             value={currentSearch}
@@ -757,11 +757,11 @@ export default function App() {
             + Добавить книгу
           </button>
         </div>
-        <div className="flex gap-6 mb-12 flex-wrap gap-y-6">
+        <div className="flex gap-8 mb-16 flex-wrap gap-y-8">
           <button
             onClick={handleExport}
             title="Экспорт в JSON"
-            className="px-6 py-4 rounded-xl text-lg cursor-pointer transition-all duration-200"
+            className="px-8 py-5 rounded-xl text-lg cursor-pointer transition-all duration-200"
             style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)', fontStyle: 'italic' }}
           >
             💾 Экспорт
@@ -769,7 +769,7 @@ export default function App() {
           <button
             onClick={handleImport}
             title="Импорт из JSON"
-            className="px-6 py-4 rounded-xl text-lg cursor-pointer transition-all duration-200"
+            className="px-8 py-5 rounded-xl text-lg cursor-pointer transition-all duration-200"
             style={{ background: 'var(--bg-soft)', color: 'var(--text)', border: '2px solid var(--border)', fontStyle: 'italic' }}
           >
             📂 Импорт
@@ -782,10 +782,10 @@ export default function App() {
             onChange={handleImportFile}
           />
         </div>
-        <div className="flex gap-6 flex-wrap gap-y-6 mt-6">
+        <div className="flex gap-8 flex-wrap gap-y-8 mt-8">
           <button
             onClick={() => setCurrentFilter('all')}
-            className="px-6 py-3 rounded-full text-sm cursor-pointer transition-all duration-200"
+            className="px-8 py-4 rounded-full text-sm cursor-pointer transition-all duration-200"
             style={{
               border: '2px solid var(--border)',
               background: currentFilter === 'all' ? 'var(--primary)' : 'transparent',
@@ -799,7 +799,7 @@ export default function App() {
             <button
               key={fb.value}
               onClick={() => setCurrentFilter(fb.value)}
-              className="px-6 py-3 rounded-full text-sm cursor-pointer transition-all duration-200"
+              className="px-8 py-4 rounded-full text-sm cursor-pointer transition-all duration-200"
               style={{
                 border: '2px solid var(--border)',
                 background: currentFilter === fb.value ? 'var(--primary)' : 'transparent',
@@ -814,7 +814,7 @@ export default function App() {
       </div>
 
       {/* Books grid */}
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-12 max-[600px]:grid-cols-1">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(450px,1fr))] gap-14 max-[600px]:grid-cols-1">
         {filteredBooks.length === 0 ? (
           <div className="text-center py-16 col-span-full" style={{ color: 'var(--text-soft)' }}>
             <div className="text-6xl mb-4 opacity-40">📔</div>
