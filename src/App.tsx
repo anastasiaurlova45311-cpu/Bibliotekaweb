@@ -268,7 +268,7 @@ function BookCard({ book, onEdit, onDelete, onPageChange }: {
           </div>
         )}
 
-        <div className="flex gap-1 justify-end pt-2.5" style={{ borderTop: '1px solid var(--border)' }}>
+        <div className="flex gap-3 justify-end pt-2.5" style={{ borderTop: '1px solid var(--border)' }}>
           <button
             onClick={() => onEdit(book.id)}
             className="p-2.5 px-4 rounded-lg text-base cursor-pointer transition-all duration-200 bg-transparent border-none hover:bg-[var(--bg-soft)]"
@@ -655,7 +655,7 @@ export default function App() {
   // Loading state
   if (authLoading || booksLoading || goalLoading) {
     return (
-      <div className="w-full px-10 py-10 flex items-center justify-center min-h-screen">
+      <div className="w-full px-16 py-10 flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-pulse">📚</div>
           <p className="text-xl" style={{ color: 'var(--text-soft)' }}>Загрузка...</p>
@@ -667,7 +667,7 @@ export default function App() {
   // Not authenticated
   if (!user) {
     return (
-      <div className="w-full px-10 py-10 flex items-center justify-center min-h-screen">
+      <div className="w-full px-16 py-10 flex items-center justify-center min-h-screen">
         <div className="text-center max-w-md">
           <img src="/logo.svg" alt="" className="w-24 h-24 mx-auto mb-6" />
           <h1 className="text-4xl font-bold mb-4" style={{ color: 'var(--heading)' }}>
@@ -693,7 +693,7 @@ export default function App() {
   }
 
   return (
-    <div className="w-full px-10 py-10">
+    <div className="w-full px-16 py-10 max-w-[1600px] mx-auto">
       {/* Header */}
       <header className="flex justify-between items-center mb-20 flex-wrap gap-6">
         <div className="flex items-center gap-3">
@@ -705,7 +705,7 @@ export default function App() {
             <p className="italic" style={{ color: 'var(--text-soft)' }}>Коллекция книг, которые вдохновляют</p>
           </div>
         </div>
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-6 items-center">
           <a
             href="https://forms.gle/jSybJ8b9fPY8zNcf6"
             target="_blank"
@@ -738,7 +738,7 @@ export default function App() {
 
       {/* Controls */}
       <div className="rounded-2xl p-7 mb-20" style={{ background: 'var(--card)', boxShadow: 'var(--shadow)' }}>
-        <div className="flex gap-4 mb-10 flex-wrap gap-y-4">
+        <div className="flex gap-6 mb-10 flex-wrap gap-y-6">
           <input
             type="text"
             value={currentSearch}
@@ -757,7 +757,7 @@ export default function App() {
             + Добавить книгу
           </button>
         </div>
-        <div className="flex gap-4 mb-12 flex-wrap gap-y-4">
+        <div className="flex gap-6 mb-12 flex-wrap gap-y-6">
           <button
             onClick={handleExport}
             title="Экспорт в JSON"
@@ -782,7 +782,7 @@ export default function App() {
             onChange={handleImportFile}
           />
         </div>
-        <div className="flex gap-4 flex-wrap gap-y-4 mt-6">
+        <div className="flex gap-6 flex-wrap gap-y-6 mt-6">
           <button
             onClick={() => setCurrentFilter('all')}
             className="px-6 py-3 rounded-full text-sm cursor-pointer transition-all duration-200"
